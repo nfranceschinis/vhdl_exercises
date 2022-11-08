@@ -1,43 +1,50 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
+-- Title:         ES 1: Syncronized n-buffer
+-- Description:   structural description of interconnection between buffer module and vectorGenerator module
+-- Author:        Nicola Franceschinis
+-- Date:          07/11/2022
 
-ENTITY testBench IS
-END testBench;
+library ieee;
+use ieee.std_logic_1164.all;
 
-ARCHITECTURE structural OF testBench IS                 -- structural -> describe how different parts are connected
-  CONSTANT N : INTEGER := 16;
-  CONSTANT NTB : INTEGER := 16;
+entity testBench is
+end testBench;
+
+architecture structural of testBench is                 -- structural -> describe how different parts are connected
+  --constants space
+  constant NTB : integer := 16;   --Select number of input/output
   
-  COMPONENT buf
-    GENERIC (N : integer);
-      PORT (clk  : IN STD_LOGIC;
-            rstn : IN STD_LOGIC;
-            d    : IN STD_LOGIC_VECTOR (N-1 downto 0);
-            q    : OUT STD_LOGIC_VECTOR (N-1 downto 0));
-  END COMPONENT;
-
-  COMPONENT vectorGenerator
-    GENERIC (N : integer);
-    PORT (clk  : OUT STD_LOGIC;
-          rstn : OUT STD_LOGIC;
-          d    : OUT STD_LOGIC_VECTOR (N-1 DOWNTO 0);
-          q    : IN STD_LOGIC_VECTOR (N-1 DOWNTO 0));
-  END COMPONENT;
-
-  SIGNAL clkTB, rstnTB : STD_LOGIC;
-  SIGNAL dTB, qTB : STD_LOGIC_VECTOR (N-1 DOWNTO 0);
+  -- In/out description of buffer block
+  component buf is
+	  generic (N  : integer := 8);	-- 8 valore di default se nessun valore assegnato
+	  port (clk   : in  std_logic;
+          rstn  : in  std_logic;
+			    d	    : in  std_logic_vector (N-1 downto 0);
+			    q	    : out std_logic_vector (N-1 downto 0));
+  end component;
+  -- In/out description of vectorGenerator block
+  component vectorGenerator is
+    generic (N  : integer := 8);
+    port (clk   : out  std_logic;
+          rstn  : out  std_logic;
+          d     : out  std_logic_vector (N-1 downto 0);
+          q     : in   std_logic_vector (N-1 downto 0));
+  end component;
+  -- description of interconnection signals (effective cables between blocks)
+  signal clkTB, rstnTB : std_logic;
+  signal dTB, qTB : std_logic_vector (NTB-1 downto 0);
 
 BEGIN
-  d1 : buf GENERIC MAP( N => NTB)
-          PORT MAP(q    => qTB,
-                               rstn => rstnTB,
-                               clk  => clkTB,
-                               d    => dTB);
 
-  v1 : vectorGenerator GENERIC MAP( N => NTB)
-                               PORT MAP(q    => qTB,
-                                        rstn => rstnTB,
-                                        clk  => clkTB,
-                                        d    => dTB);
+  buffer1 : buf GENERIC MAP( N => NTB)
+           PORT MAP(q    => qTB,
+                    rstn => rstnTB,
+                    clk  => clkTB,
+                    d    => dTB);
+
+  vector1 : vectorGenerator GENERIC MAP( N => NTB)
+                       PORT MAP(q    => qTB,
+                                rstn => rstnTB,
+                                clk  => clkTB,
+                                d    => dTB);
 
 END structural;

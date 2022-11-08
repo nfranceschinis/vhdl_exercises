@@ -1,59 +1,57 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
+-- Title:         ES 1: Syncronized n-buffer
+-- Description:   behavioral description of vectorGenerator
+-- Author:        Nicola Franceschinis
+-- Date:          07/11/2022
 
-ENTITY vectorGenerator IS
-    GENERIC (N : integer);
-  PORT (
-    clk  : OUT STD_LOGIC;
-    rstn : OUT STD_LOGIC;
-    d    : OUT STD_LOGIC_VECTOR (N-1 downto 0);
-    q    : IN STD_LOGIC_VECTOR (N-1 downto 0));
-END vectorGenerator;
+library ieee;
+use ieee.std_logic_1164.all;
 
-ARCHITECTURE behavioral OF vectorGenerator IS
+entity vectorGenerator is
+    generic (N  : integer := 8);
+    port (clk   : out  std_logic;
+          rstn  : out  std_logic;
+          d     : out  std_logic_vector (N-1 downto 0);
+          q     : in   std_logic_vector (N-1 downto 0));
+  end vectorGenerator;
 
-  CONSTANT DT           : TIME := 50 ns;
-  constant dtr          : time := 120 ns;
+architecture behavioral of vectorGenerator is
 
-  --SIGNAL id, iClk, iRstn : STD_LOGIC;
+  constant ckDT   : time := 50  ns;
+  constant rstDT  : time := 145 ns;
+  constant dataDT : time := 100 ns;
 
-BEGIN
-  PROCESS
-        VARIABLE ck : std_logic := '0';
-  BEGIN
+begin
+  clock : process   -- clock signal description
+    variable ck: std_logic := '0';
+  begin
     clk <= ck;
-    WAIT FOR DT;
-    ck := NOT ck;
-  END PROCESS;
+    wait for ckDT;
+    ck := not ck;
+  end process;
 
-  PROCESS
-    VARIABLE clkTmp : STD_LOGIC := '0';
-        BEGIN
-        rstn <= '0';
-        WAIT FOR dtr;
-        rstn <= '1';
-        wait;
-  END PROCESS;
+  reset : process   -- rst signal description
+  begin
+    rstn <= '0';
+    wait for rstDT;
+    rstn <= '1';
+  end process;
 
-  PROCESS
-    BEGIN
-        d <= (OTHERS => '0');
-        WAIT FOR dtr;
-        d <= X"FF00";
-        WAIT FOR dtr;
-        d <= X"F0F0";
-        WAIT FOR dtr;
-        d <= X"F00F";
-        WAIT FOR dtr;
-        d <= X"0FF0";
-        WAIT FOR Dtr;
-        d <= X"0F0F";
-        WAIT FOR dtr;
-        d <= X"00FF";
-        WAIT;
-    END PROCESS;
+  data : process    -- bus signals description
+  begin
+    d <= (others => '0');
+    wait for rstDT;
+    d <= x"ff00";
+    wait for dataDT;
+    d <= x"00ff";
+    wait for dataDT;
+    d <= x"ffff";
+    wait for dataDT;
+    d <= x"f0f0";
+    wait for dataDT;
+    d <= x"0f0f";
+    wait for dataDT;
+    d <= x"0000";
+    wait for dataDT;
+  end process;
 
-  --clk  <= iClk;
-  --rstn <= iRstn;
-  --d    <= id;
 END behavioral;
