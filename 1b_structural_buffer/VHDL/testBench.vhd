@@ -14,7 +14,7 @@ architecture structural of testBench is                 -- structural -> describ
   constant NTB : integer := 16;   --Select number of input/output
   
   -- In/out description of buffer block
-  component buf is
+  component bufferNbit is
 	  generic (N  : integer);
 	  port (clk   : in  std_logic;
           rstn  : in  std_logic;
@@ -35,7 +35,7 @@ architecture structural of testBench is                 -- structural -> describ
 
 BEGIN
 
-  buffer1 : buf GENERIC MAP( N => NTB)
+  buffer1 : bufferNbit GENERIC MAP( N => NTB)
            PORT MAP(q    => qTB,
                     rstn => rstnTB,
                     clk  => clkTB,

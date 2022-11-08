@@ -20,7 +20,8 @@ elaboration : analysis
 	$(GHDL) -c $(GHDLFLAGS) -e $(MAIN)
 
 analysis: clean
-	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/buffer.vhd
+	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/buffer1bit.vhd
+	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/bufferNbit.vhd
 	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/vectorGenerator.vhd
 	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/$(MAIN).vhd
 
