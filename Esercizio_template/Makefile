@@ -1,24 +1,35 @@
 VHDLDIR=VHDL
 WORKDIR=WORK
 VCDDIR=VCD
+VECDIR=OUTVECS
 MAIN=testBench
 TIME="100ns"
 #
-GHDL=/usr/bin/ghdl
+GHDL=ghdl
 GHDLFLAGS=--ieee=synopsys --std=08
 GHDLRUNFLAGS=--vcd=$(MAIN).vcd --stop-time=$(TIME)
 
-all : run
+all: run
 
-run : elaboration
+run: elaboration
 	$(GHDL) -c $(GHDLFLAGS) -r $(MAIN) $(GHDLRUNFLAGS)
-	mv $(MAIN).vcd VCD
+	mv $(MAIN).vcd $(VCDDIR)
 	mv *.cf $(WORKDIR)
 
 elaboration : analysis
 	$(GHDL) -c $(GHDLFLAGS) -e $(MAIN)
 
-analysis : clean
-	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/dff.vhd
+analysis: clean
+	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/buffer.vhd
 	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/vectorGenerator.vhd
-	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)
+	$(GHDL) -a $(GHDLFLAGS) $(VHDLDIR)/$(MAIN).vhd
+
+clean: prepare
+	@rm -f $(WORKDIR)/*.cf $(VCDDIR)/*.vcd *.cf *.vcd
+
+prepare: force
+	mkdir -p $(WORKDIR)
+	mkdir -p $(VCDDIR)
+	mkdir -p $(VECDIR)
+
+force:
