@@ -1,4 +1,4 @@
-# VHDL exercise 1
+# VHDL exercise 1b
 
 ## First example of VHDL exercise
 

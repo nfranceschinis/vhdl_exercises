@@ -1,4 +1,4 @@
--- Title:         ES 1: Syncronized n-buffer
+-- Title:         ES 1a: Syncronized n-buffer
 -- Description:   behavioral description of buffer module
 -- Author:        Nicola Franceschinis
 -- Date:          07/11/2022

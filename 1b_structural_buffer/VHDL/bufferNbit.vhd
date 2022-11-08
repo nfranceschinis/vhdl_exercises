@@ -1,5 +1,5 @@
 -- Title:         ES 1b: Syncronized n-buffer
--- Description:   behavioral description of  single buffer module
+-- Description:   structural description of  single buffer module
 -- Author:        Nicola Franceschinis
 -- Date:          08/11/2022
 

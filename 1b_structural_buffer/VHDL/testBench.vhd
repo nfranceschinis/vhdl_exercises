@@ -1,4 +1,4 @@
--- Title:         ES 1: Syncronized n-buffer
+-- Title:         ES 1b: Syncronized n-buffer
 -- Description:   structural description of interconnection between buffer module and vectorGenerator module
 -- Author:        Nicola Franceschinis
 -- Date:          07/11/2022
