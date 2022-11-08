@@ -15,7 +15,7 @@ architecture structural of testBench is                 -- structural -> describ
   
   -- In/out description of buffer block
   component buf is
-	  generic (N  : integer := 8);	-- 8 valore di default se nessun valore assegnato
+	  generic (N  : integer);
 	  port (clk   : in  std_logic;
           rstn  : in  std_logic;
 			    d	    : in  std_logic_vector (N-1 downto 0);
@@ -23,7 +23,7 @@ architecture structural of testBench is                 -- structural -> describ
   end component;
   -- In/out description of vectorGenerator block
   component vectorGenerator is
-    generic (N  : integer := 8);
+    generic (N  : integer);
     port (clk   : out  std_logic;
           rstn  : out  std_logic;
           d     : out  std_logic_vector (N-1 downto 0);

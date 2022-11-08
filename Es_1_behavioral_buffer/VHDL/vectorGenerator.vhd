@@ -30,10 +30,11 @@ begin
   end process;
 
   reset : process   -- rst signal description
+    variable rst: std_logic := '0';
   begin
-    rstn <= '0';
+    rstn <= rst;
     wait for rstDT;
-    rstn <= '1';
+    rst := not rst;
   end process;
 
   data : process    -- bus signals description
