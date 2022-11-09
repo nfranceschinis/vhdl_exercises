@@ -11,8 +11,8 @@ entity bufferNbit is
   generic (N    : integer := 8);    -- default value 8
   port (clk     : in  std_logic;
         rstn    : in  std_logic;
-	    d	    : in  std_logic_vector (N-1 downto 0);
-		q	    : out std_logic_vector (N-1 downto 0));
+	      d	      : in  std_logic_vector (N-1 downto 0);
+		    q	      : out std_logic_vector (N-1 downto 0));
 end entity;
 
 architecture structural of bufferNbit is
