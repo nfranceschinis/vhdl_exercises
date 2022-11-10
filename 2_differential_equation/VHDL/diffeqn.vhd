@@ -8,7 +8,7 @@ use	ieee.std_logic_1164.all;
 use   ieee.numeric_std.all;
 use   ieee.fixed_pkg.all;     -- fixed , package
 -- In/out description of differential equation block
-entity diffeq is
+entity diffeqn is
    -- SSZ: Single Size
    -- DSZ: Double Size
    -- LLM: Lower Limit
@@ -27,10 +27,10 @@ entity diffeq is
          x     : out sfixed (DSZ-1 downto LLM);
          y     : out sfixed (DSZ-1 downto LLM);
          done  : out std_logic);
-end diffeq;
+end diffeqn;
 -- using SFIXED instead of STD_LOGIC_VECTOR because we can use negative low values and represent fixed point numbers
 --behavioral description of diffeq block
-architecture behavioral of diffeq is
+architecture behavioral of diffeqn is
 	
    signal u : sfixed (dsz-1 downto llm);
 
