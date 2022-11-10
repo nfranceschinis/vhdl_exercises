@@ -4,54 +4,78 @@
 -- Date:          07/11/2022
 
 library ieee;
-use ieee.std_logic_1164.all;
+use   ieee.std_logic_1164.all;
+use   ieee.numeric_std.all;
+use   ieee.fixed_pkg.all;     -- fixed , package
+use   std.textio.all;
 
 entity vectorGenerator is
-    generic (N  : integer := 8);
-    port (clk   : out  std_logic;
-          rstn  : out  std_logic;
-          d     : out  std_logic_vector (N-1 downto 0);
-          q     : in   std_logic_vector (N-1 downto 0));
-  end vectorGenerator;
+   -- SSZ: Single Size
+   -- DSZ: Double Size
+   -- LLM: Lower Limit
+
+   generic (SSZ : integer := 16;
+            DSZ : integer := 2 * SSZ;
+            LLM : integer := -16);
+
+	port (clk   : out  std_logic;
+        rstn  : out  std_logic;
+	      xin	  : out  sfixed (SSZ-1 downto LLM);
+		    yin	  : out  sfixed (SSZ-1 downto LLM);
+        uin   : out  sfixed (SSZ-1 downto LLM);
+        dx    : out  sfixed (SSZ-1 downto LLM);
+        a     : out  sfixed (SSZ-1 downto LLM);
+        x     : in   sfixed (DSZ-1 downto LLM);
+        y     : in   sfixed (DSZ-1 downto LLM);
+        done  : in   std_logic);
+end vectorGenerator;
 
 architecture behavioral of vectorGenerator is
 
   constant ckDT   : time := 50  ns;
   constant rstDT  : time := 145 ns;
-  constant dataDT : time := 100 ns;
+  constant dataDT : time := 5   ns;
+
+  constant outputName: string := "RESULTS/diffeqn.out";
+  file     outputFile: text;
 
 begin
-  clock : process   -- clock signal description
-    variable ck: std_logic := '0';
-  begin
-    clk <= ck;
-    wait for ckDT;
-    ck := not ck;
-  end process;
-
-  reset : process   -- rst signal description
+  
+  reset : process   -- rst signal description and file opening
     variable rst: std_logic := '0';
   begin
     rstn <= rst;
+    file_open (outputFile, outputName, write_mode);
     wait for rstDT;
     rst := not rst;
   end process;
-
-  data : process    -- bus signals description
+  
+  clock : process   -- clock signal description and data saving
+    variable ck : std_logic := '0';
+    variable outputLine : line;
   begin
-    d <= (others => '0');
-    wait for rstDT;
-    d <= x"ff00";
-    wait for dataDT;
-    d <= x"00ff";
-    wait for dataDT;
-    d <= x"ffff";
-    wait for dataDT;
-    d <= x"f0f0";
-    wait for dataDT;
-    d <= x"0f0f";
-    wait for dataDT;
-    d <= x"0000";
+    clk <= ck;
+    ck := not ck;
+    wait for ckDT;
+    if (clk = '1') then   -- print temporary and final results
+      write (outputLine, string '("x: "));
+      write (outputLine, to_real (x));
+      write (outputLine, string '(" y: "));
+      write (outputLine, to_real (y));
+      writeline (outputFile, outputLine);
+    end if;
+    if (done = '1') then    --close file at the end
+      file_close (outputFile);
+      end if;
+  end process;
+
+  inputValues : process    -- bus signals description
+  begin
+    xin <= to_sfixed (0.0, xin);
+    yin <= to_sfixed (1.0, yin);
+    uin <= to_sfixed (0.0, uin);
+    dx  <= to_sfixed (0.001, dx);
+    a   <= to_sfixed (3.0, a);
     wait for dataDT;
   end process;
 

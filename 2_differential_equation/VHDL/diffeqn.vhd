@@ -24,8 +24,8 @@ entity diffeq is
          uin   : in  sfixed (SSZ-1 downto LLM);
          dx    : in  sfixed (SSZ-1 downto LLM);
          a     : in  sfixed (SSZ-1 downto LLM);
-         x     : out sfixed (SSZ-1 downto LLM);
-         y     : out sfixed (SSZ-1 downto LLM);
+         x     : out sfixed (DSZ-1 downto LLM);
+         y     : out sfixed (DSZ-1 downto LLM);
          done  : out std_logic);
 end diffeq;
 -- using SFIXED instead of STD_LOGIC_VECTOR because we can use negative low values and represent fixed point numbers

@@ -4,7 +4,7 @@
 -- Date:          09/11/2022
 
 library ieee;
-use ieee.std_logic_1164.all;
+use   ieee.std_logic_1164.all;
 use   ieee.numeric_std.all;
 use   ieee.fixed_pkg.all;     -- fixed , package
 
@@ -33,8 +33,8 @@ architecture structural of testBench is                 -- structural -> describ
         uin   : in  sfixed (SSZ-1 downto LLM);
         dx    : in  sfixed (SSZ-1 downto LLM);
         a     : in  sfixed (SSZ-1 downto LLM);
-        x     : out sfixed (SSZ-1 downto LLM);
-        y     : out sfixed (SSZ-1 downto LLM);
+        x     : out sfixed (DSZ-1 downto LLM);
+        y     : out sfixed (DSZ-1 downto LLM);
         done  : out std_logic);
 end component;
   -- In/out description of vectorGenerator block
@@ -54,8 +54,8 @@ end component;
         uin   : out  sfixed (SSZ-1 downto LLM);
         dx    : out  sfixed (SSZ-1 downto LLM);
         a     : out  sfixed (SSZ-1 downto LLM);
-        x     : in   sfixed (SSZ-1 downto LLM);
-        y     : in   sfixed (SSZ-1 downto LLM);
+        x     : in   sfixed (DSZ-1 downto LLM);
+        y     : in   sfixed (DSZ-1 downto LLM);
         done  : in   std_logic);
 end component;
   -- description of interconnection signals (effective cables between blocks)
@@ -64,33 +64,32 @@ end component;
   signal xTB, yTB : sfixed (SSZ-1 downto LLM);
   signal doneTB : std_logic; 
 
-BEGIN
-
-  eqn1 : diffeq GENERIC MAP(SSZ <= SSZ,
-                            DSZ <= DSZ,
-                            LLM <= LLM)
-                PORT MAP(rstn => rstnTB,
-                         clk  => clkTB,
-                         xin => xinTB,
-                         yin => yinTB,
-                         uin => uinTB,
-                         dx => dxTB,
-                         a => aTB,
-                         x => xTB,
-                         y => yTB,
-                         done => doneTB);
-  
-  vectorGenerator1 : vectorGenerator GENERIC MAP(SSZ <= SSZ,
-                            DSZ <= DSZ,
-                            LLM <= LLM)
-                PORT MAP(rstn => rstnTB,
-                         clk  => clkTB,
-                         xin => xinTB,
-                         yin => yinTB,
-                         uin => uinTB,
-                         dx => dxTB,
-                         a => aTB,
-                         x => xTB,
-                         y => yTB,
-                         done => doneTB);
-end structural;
+begin
+    eqn1 : diffeq generic map(SSZ => SSZ,
+                              DSZ => DSZ,
+                              LLM => LLM)
+                  PORT MAP(rstn => rstnTB,
+                          clk  => clkTB,
+                          xin => xinTB,
+                          yin => yinTB,
+                          uin => uinTB,
+                          dx => dxTB,
+                          a => aTB,
+                          x => xTB,
+                          y => yTB,
+                          done => doneTB);
+    
+    vectorGenerator1 : vectorGenerator GENERIC MAP(SSZ => SSZ,
+                              DSZ => DSZ,
+                              LLM => LLM)
+                  PORT MAP(rstn => rstnTB,
+                          clk  => clkTB,
+                          xin => xinTB,
+                          yin => yinTB,
+                          uin => uinTB,
+                          dx => dxTB,
+                          a => aTB,
+                          x => xTB,
+                          y => yTB,
+                          done => doneTB);
+  end structural;
