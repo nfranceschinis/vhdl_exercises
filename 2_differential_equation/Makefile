@@ -3,8 +3,8 @@ WORKDIR=WORK
 VCDDIR=VCD
 VECDIR=OUTVECS
 MAIN=testBench
-TIME="100ns"
-#
+TIME="1000ms"
+
 GHDL=ghdl
 GHDLFLAGS=--ieee=synopsys --std=08
 GHDLRUNFLAGS=--vcd=$(MAIN).vcd --stop-time=$(TIME)

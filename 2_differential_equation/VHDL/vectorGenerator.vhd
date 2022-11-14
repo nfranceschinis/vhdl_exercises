@@ -32,9 +32,8 @@ end vectorGenerator;
 
 architecture behavioral of vectorGenerator is
 
-  constant ckDT   : time := 50  ns;
-  constant rstDT  : time := 145 ns;
-  constant dataDT : time := 5   ns;
+  constant ckDT   : time := 100  ns;
+  constant rstDT  : time := (0.5 * ckDT) - 20 ns;
 
   constant outputName: string := "RESULTS/diffeqn.out";
   file     outputFile: text;
@@ -42,12 +41,12 @@ architecture behavioral of vectorGenerator is
 begin
   
   reset : process   -- rst signal description and file opening
-    variable rst: std_logic := '0';
   begin
-    rstn <= rst;
+    rstn <= '0';
     file_open (outputFile, outputName, write_mode);
     wait for rstDT;
-    rst := not rst;
+    rstn <= '1';
+    wait;
   end process;
   
   clock : process   -- clock signal description and data saving
@@ -57,6 +56,7 @@ begin
     clk <= ck;
     ck := not ck;
     wait for ckDT;
+    -- Print temporary results
     if (clk = '1') then   -- print temporary and final results
       write (outputLine, string '("x: "));
       write (outputLine, to_real (x));
@@ -66,7 +66,8 @@ begin
     end if;
     if (done = '1') then    --close file at the end
       file_close (outputFile);
-      end if;
+      wait;
+    end if;
   end process;
 
   inputValues : process    -- bus signals description
@@ -76,7 +77,7 @@ begin
     uin <= to_sfixed (0.0, uin);
     dx  <= to_sfixed (0.001, dx);
     a   <= to_sfixed (3.0, a);
-    wait for dataDT;
+    wait;
   end process;
 
 END behavioral;

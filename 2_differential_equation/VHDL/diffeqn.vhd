@@ -32,7 +32,7 @@ end diffeqn;
 --behavioral description of diffeq block
 architecture behavioral of diffeqn is
 	
-   signal u : sfixed (dsz-1 downto llm);
+   signal u : sfixed (DSZ-1 downto LLM);
 
    -- xin   : starting x
    -- yin   : y(xin)
@@ -58,11 +58,11 @@ begin
             x <= resize (x + dx, x);
             y <= resize (y + x * dx, y);
             u <= resize (u - (3 * x * u * dx) - (3 * y * dx), u);
-         end if;
-         if (x >= a) then
-            done <= '1';
-         else
-            done <= '0';
+            if (x >= a) then
+               done <= '1';
+            else
+               done <= '0';
+            end if;
          end if;
       end if;
    end process;

@@ -17,7 +17,7 @@ architecture structural of testBench is                 -- structural -> describ
   constant DSZ: integer := 2 * SSZ;
   constant LLM: integer := -16;
 
-  component diffeq is
+  component diffeqn is
    -- SSZ: Single Size
    -- DSZ: Double Size
    -- LLM: Lower Limit
@@ -61,11 +61,11 @@ end component;
   -- description of interconnection signals (effective cables between blocks)
   signal clkTB, rstnTB : std_logic;
   signal xinTB, yinTB, uinTB, dxTB, aTB : sfixed (SSZ-1 downto LLM);
-  signal xTB, yTB : sfixed (SSZ-1 downto LLM);
+  signal xTB, yTB : sfixed (DSZ-1 downto LLM);
   signal doneTB : std_logic; 
 
 begin
-    eqn1 : diffeq generic map(SSZ => SSZ,
+    eqn1 : diffeqn generic map(SSZ => SSZ,
                               DSZ => DSZ,
                               LLM => LLM)
                   PORT MAP(rstn => rstnTB,
