@@ -15,7 +15,7 @@ entity vectorGenerator is
 architecture behavioral of vectorGenerator is
 
   constant ckDT   : time := 20  ns;
-  constant dataDT : time := 3   ns;
+  constant dataDT : time := 10   ns;
 
 begin
   clock : process   -- clock signal description

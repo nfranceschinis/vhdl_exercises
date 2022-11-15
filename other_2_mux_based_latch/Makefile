@@ -3,7 +3,7 @@ WORKDIR=WORK
 VCDDIR=VCD
 VECDIR=OUTVECS
 MAIN=testBench
-TIME="100us"
+TIME="10us"
 #
 GHDL=ghdl
 GHDLFLAGS=--ieee=synopsys --std=08
