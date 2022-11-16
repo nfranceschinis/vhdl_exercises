@@ -9,7 +9,8 @@ use	ieee.std_logic_1164.all;
 entity passTRn is
   port (i    : in  std_logic;
         clk  : in  std_logic;
-        o    : out std_logic);
+        o    : out std_logic;
+        s    : out std_logic);
 end entity;
 --behavioral description of mux block
 architecture behavioral of passTRn is                  --behavioral -> functional description of the block
@@ -18,5 +19,6 @@ begin
       passTRn1 : process (i, o, clk)  -- process description with signals sensitivity
       begin
          o <= i when clk = '0' else 'Z';
+         s <= '1' when clk = '0' else '0';
       end process;
 end behavioral;

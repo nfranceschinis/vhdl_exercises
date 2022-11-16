@@ -9,13 +9,15 @@ use ieee.std_logic_1164.all;
 entity vectorGenerator is
     port (d    : out  std_logic;
           clk  : out  std_logic;
-		      q	   : in   std_logic);
+		      q	   : in   std_logic;
+          sn    : in   std_logic;
+          sp    : in   std_logic);
   end vectorGenerator;
 
 architecture behavioral of vectorGenerator is
 
-  constant ckDT   : time := 20  ns;
-  constant dataDT : time := 10   ns;
+  constant ckDT   : time := 10  ns;
+  constant dataDT : time := 1500   ps;
 
 begin
   clock : process   -- clock signal description

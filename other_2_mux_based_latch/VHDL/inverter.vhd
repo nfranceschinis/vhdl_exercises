@@ -16,6 +16,6 @@ architecture behavioral of inverter is                  --behavioral -> function
    begin
       inv1 : process (a, q)  -- process description with signals sensitivity
       begin
-         q <= not a;
+         q <= not a after 1 fs;
       end process;
 end behavioral;

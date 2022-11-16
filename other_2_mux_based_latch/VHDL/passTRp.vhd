@@ -9,7 +9,8 @@ use	ieee.std_logic_1164.all;
 entity passTRp is
   port (i    : in  std_logic;
         clk  : in  std_logic;
-        o    : out std_logic);
+        o    : out std_logic;
+        s    : out std_logic);
 end entity;
 --behavioral description of mux block
 architecture behavioral of passTRp is                  --behavioral -> functional description of the block
@@ -18,5 +19,6 @@ begin
       passTRp1 : process (i, o, clk)  -- process description with signals sensitivity
       begin
          o <= i when clk = '1' else 'Z';
+         s <= '1' when clk = '1' else '0';
       end process;
 end behavioral;

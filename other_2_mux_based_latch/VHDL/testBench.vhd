@@ -20,22 +20,26 @@ architecture structural of testBench is                 -- structural -> describ
   component passTRp is
     port (i    : in  std_logic;
           clk  : in  std_logic;
-          o    : out std_logic);
+          o    : out std_logic;
+          s    : out std_logic);
   end component;
   -- In/out description of pass transistor negative block
   component passTRn is
     port (i    : in  std_logic;
           clk  : in  std_logic;
-          o    : out std_logic);
+          o    : out std_logic;
+          s    : out std_logic);
   end component;
   -- In/out description of vectorGenerator block
   component vectorGenerator is
     port (d    : out  std_logic;
           clk  : out  std_logic;
-		      q	   : in   std_logic);
+		      q	   : in   std_logic;
+          sn    : in   std_logic;
+          sp    : in   std_logic);
   end component;
   -- description of interconnection signals (effective cables between blocks)
-  signal dTB, clkTB, qTB: std_logic;
+  signal dTB, clkTB, qTB, statenTB, statepTB: std_logic;
   signal ip1, ip2, ip3: std_logic;
 BEGIN
 
@@ -44,7 +48,8 @@ BEGIN
 
   passTRp1: passTRp PORT MAP(i    => ip1,
                              clk  => clkTB,
-                             o    => ip2);
+                             o    => ip2,
+                             s    => statepTB);
   
   inv2 : inverter PORT MAP(a    => ip2,
                            q    => qTB);
@@ -54,10 +59,13 @@ BEGIN
 
   passTRn1: passTRn PORT MAP(i    => ip3,
                              clk  => clkTB,
-                             o    => ip2);
+                             o    => ip2,
+                             s    => statenTB);
 
   vector1 : vectorGenerator PORT MAP(d    => dTB,
                                      clk  => clkTB,
-                                     q    => qTB);
+                                     q    => qTB,
+                                     sn   => statenTB,
+                                     sp   => statepTB);
 
 END structural;
