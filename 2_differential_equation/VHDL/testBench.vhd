@@ -27,9 +27,9 @@ architecture structural of testBench is                 -- structural -> describ
             LLM : integer);
 
 	port (clk   : in  std_logic;
-        rstn  : in  std_logic;
-	      xin	  : in  sfixed (SSZ-1 downto LLM);
-		    yin	  : in  sfixed (SSZ-1 downto LLM);
+          rstn  : in  std_logic;
+	      xin	: in  sfixed (SSZ-1 downto LLM);
+		  yin	: in  sfixed (SSZ-1 downto LLM);
         uin   : in  sfixed (SSZ-1 downto LLM);
         dx    : in  sfixed (SSZ-1 downto LLM);
         a     : in  sfixed (SSZ-1 downto LLM);
