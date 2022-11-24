@@ -23,7 +23,7 @@ architecture structural of bufferNbit is
 		  qBit	    : out std_logic);
   end component;
 
-  signal dBus, qBus: std_logic_vector (N-1 downto 0);
+  signal qBus: std_logic_vector (N-1 downto 0);
 begin
     q <= qBus;
     qBus <= d;
