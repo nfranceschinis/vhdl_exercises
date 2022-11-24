@@ -25,8 +25,8 @@ architecture behavioral of alu is
   constant andOP : std_logic_vector := 0b"0100";
   constant orOP  : std_logic_vector := 0b"0101";
   constant xorOP : std_logic_vector := 0b"0110";
-  constant lshOP: std_logic_vector := 0b"0111";
-  constant rshOP: std_logic_vector := 0b"1000";
+  constant lshOP : std_logic_vector := 0b"0111";
+  constant rshOP : std_logic_vector := 0b"1000";
 
   begin
   process (data1, data2, ALUctrl)
