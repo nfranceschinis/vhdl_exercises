@@ -4,8 +4,8 @@
 -- Date:          22/11/2022
 
 library ieee;
-  use	ieee.std_logic_1164.all;
-  use ieee.numeric_std.all;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity alu is
   generic (N    : integer := 16);
@@ -17,22 +17,39 @@ entity alu is
 end entity;
 
 architecture behavioral of alu is
+  --cmd table
+  constant sumOP : std_logic_vector := 0b"0000";
+  constant subOP : std_logic_vector := 0b"0001";
+  constant eqOP  : std_logic_vector := 0b"0010";
+  constant neqOP : std_logic_vector := 0b"0011";
+  constant andOP : std_logic_vector := 0b"0100";
+  constant orOP  : std_logic_vector := 0b"0101";
+  constant xorOP : std_logic_vector := 0b"0110";
+  constant lshOP: std_logic_vector := 0b"0111";
+  constant rshOP: std_logic_vector := 0b"1000";
 
-  constant sumOP : std_logic_vector := "0000";
-  constant subOP : std_logic_vector := "0001";
-  constant eqOP  : std_logic_vector := "0010";
-  constant neqOP : std_logic_vector := "0011";
-  constant andOP : std_logic_vector := "0100";
-  constant orOP  : std_logic_vector := "0101";
-  constant xorOP : std_logic_vector := "0110";
-  constant lshfOP: std_logic_vector := "0111";
-  constant rshfOP: std_logic_vector := "1000";
-
-process (data1, data2, ALUctrl)
+  begin
+  process (data1, data2, ALUctrl)
   begin
       case ALUctrl is
-          when sumOP => result <= unsigned (data1) + unsigned (data2);
-          when others
+          when sumOP => 
+            result <= std_logic_vector (unsigned (data1) + unsigned (data2));
+          when subOP => 
+            result <= std_logic_vector (unsigned (data1) - unsigned (data2));
+          when eqOP =>
+            zflag <= '1' when (data1 = data2) else '0';
+          when neqOP =>
+            zflag <= '1' when (data1 /= data2) else '0';
+          when andOP =>
+            result <= data1 and data2;
+          when orOP =>
+            result <= data1 or data2;
+          when xorOP =>
+            result <= data1 xor data2;
+          when lshOP =>
+            result <= shift_left (data1);
+          when rshOP =>
+            result <= shift_right (data1);
       end case;
-  end process;
+end process;
 end architecture;
