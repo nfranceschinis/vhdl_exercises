@@ -7,26 +7,37 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity instr_mem is
+entity rom_mem is
   generic (N_reg       : integer := 16);    -- default value 16
       port (instr_addr : in  std_logic_vector (N_reg-1 downto 0);
             instr_out  : out std_logic_vector (N_reg-1 downto 0));
 end entity;
 
-architecture structural of instr_mem is
-  component Nregister is
-    generic (N      : integer := 16);    -- default value 16
-    port (rstn      : in  std_logic;
-	      d	          : in  std_logic_vector (N-1 downto 0);
-		    q	          : out std_logic_vector (N-1 downto 0));
-end component;
+architecture behavioral of rom_mem is
 
-  --signal rstnBus: std_logic_vector (N-1 downto 0);
+constant N_rom: integer := 4;
+
+signal rom_addr: std_logic_vector (N_rom-1 downto 0);
+type ROM_type is array (0 to 15) of std_logic_vector (15 downto 0);
+constant rom_data: ROM_type:=(
+   "1000000110000000",
+   "0010110010001011",
+   "1100010000000011",
+   "0001000111000000",
+   "1110110110000001",
+   "1100000001111011",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000",
+   "0000000000000000"
+  );
 begin
-    instr_mem : for i in 0 to N_reg-1 generate
-        registerI : Nregister port map (
-                                        d     => instr_addr(i),
-                                        q     => instr_out(i));
-    end generate;
--- Rivedere assolutamente!
+  rom_addr <= instr_addr (N_reg downto 1);
+  instr_out <= rom_data (to_integer(unsigned (rom_addr))) when instr_addr < x"0020" else x"0000";
 end architecture;

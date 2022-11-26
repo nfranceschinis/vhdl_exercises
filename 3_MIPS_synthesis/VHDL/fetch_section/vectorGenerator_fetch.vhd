@@ -18,9 +18,10 @@ end entity;
 
 architecture behavioral of vectorGenerator is
 
-  constant ckDT   : time := 100  ns;
-  constant jumpDT  : time := 3 * ckDT;
-  constant watchdog : integer := 10;
+  constant ckDT      : time := 100  ns;
+  constant jumpDT    : time := 3 * ckDT;
+  constant jumpConst : integer := 4;
+  constant watchdog  : integer := 10;
 
   constant outputName: string := "RESULTS/diffeqn.out";
   file     outputFile: text;
@@ -35,7 +36,7 @@ begin
   
   clock : process   -- clock signal description and data saving
     variable ck : std_logic := '0';
-    variable counter : integer := '0';
+    variable counter : integer := 0;
     variable outputLine : line;
   begin
     clk <= ck;
@@ -44,9 +45,9 @@ begin
     -- Print temporary results
     if (clk = '1') then   -- print temporary and final results
       write (outputLine, string '("instr: "));
-      write (outputLine, to_real (instr));
+      write (outputLine, to_integer (unsigned (instr)));
       write (outputLine, string '(" jump: "));
-      write (outputLine, to_real (jump));
+      write (outputLine, to_integer (unsigned (jump)));
       writeline (outputFile, outputLine);
       counter := counter + 1;
     end if;
@@ -56,10 +57,10 @@ begin
     end if;
   end process;
 
-  inputValues : process    -- bus signals description
+  jumper : process    -- bus signals description
   begin
     wait for jumpDT;
-    jump <= to_sfixed (4, jump);
+    jump <= std_logic_vector(to_unsigned(jumpConst, jump'length));
   end process;
 
-END behavioral;
+end architecture;

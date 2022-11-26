@@ -20,21 +20,21 @@ component adder is
 		    q	   : out std_logic_vector (N-1 downto 0));
 end component;
 -- In/out description of instruction module
-component instr_mem is
-  generic (N_reg       : integer := 16);    -- default value 16
+component rom_mem is
+  generic (N_reg       : integer);    -- default value 16
   port (instr_addr : in  std_logic_vector (N_reg-1 downto 0);
         instr_out  : out std_logic_vector (N_reg-1 downto 0));
 end component;
 -- In/out description of instruction module
 component pc is
-	generic (N : integer := 16);	-- 16 valore di default se nessun valore assegnato
+	generic (N : integer);	-- 16 valore di default se nessun valore assegnato
 	port (clk  : in	 std_logic;
 		    a    : in  std_logic_vector (N-1 downto 0);
 		    q	   : out std_logic_vector (N-1 downto 0));
 end component;
 -- In/out description of vectorGenerator for functional check
 component vectorGenerator is
-  generic (N  : integer := 16);
+  generic (N  : integer);
   port (clk   : out std_logic;
         jump  : out std_logic_vector (N-1 downto 0);
         instr : in  std_logic_vector (N-1 downto 0));
@@ -47,7 +47,7 @@ end component;
 
   begin
 
-    instr_mem1 : instr_mem generic map (N_reg => N_logic)
+    rom_mem1 : rom_mem generic map (N_reg => N_logic)
                       port map (instr_addr => instr_rdTB,
                                 instr_out  => instr_busTB);
 
