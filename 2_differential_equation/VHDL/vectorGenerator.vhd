@@ -1,7 +1,7 @@
--- Title:         ES 1: Syncronized n-buffer
+-- Title:         ES 1: Differential equation
 -- Description:   behavioral description of vectorGenerator
 -- Author:        Nicola Franceschinis
--- Date:          07/11/2022
+-- Date:          09/11/2022
 
 library ieee;
 use   ieee.std_logic_1164.all;
@@ -35,6 +35,8 @@ architecture behavioral of vectorGenerator is
   constant ckDT   : time := 100  ns;
   constant rstDT  : time := (0.5 * ckDT) - 20 ns;
 
+  constant watchdog : integer := 100;
+
   constant outputName: string := "RESULTS/diffeqn.out";
   file     outputFile: text;
 
@@ -51,6 +53,7 @@ begin
   
   clock : process   -- clock signal description and data saving
     variable ck : std_logic := '0';
+    variable counter : integer := '0';
     variable outputLine : line;
   begin
     clk <= ck;
@@ -63,8 +66,9 @@ begin
       write (outputLine, string '(" y: "));
       write (outputLine, to_real (y));
       writeline (outputFile, outputLine);
+      counter := counter + 1;
     end if;
-    if (done = '1') then    --close file at the end
+    if (done = '1' or counter > watchdog) then    --close file at the end
       file_close (outputFile);
       wait;
     end if;
