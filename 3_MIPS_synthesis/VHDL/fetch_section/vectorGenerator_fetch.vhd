@@ -13,7 +13,7 @@ entity vectorGenerator is
   generic (N  : integer := 16);
   port (clk   : out std_logic;
         jump  : out std_logic_vector (N-1 downto 0);
-        instr : in  std_logic_vector (N-1 downto 0));
+        q : in  std_logic_vector (N-1 downto 0));
 end entity;
 
 architecture behavioral of vectorGenerator is
@@ -23,7 +23,7 @@ architecture behavioral of vectorGenerator is
   constant jumpConst : integer := 4;
   constant watchdog  : integer := 10;
 
-  constant outputName: string := "RESULTS/diffeqn.out";
+  constant outputName: string := "..RESULTS/reg_mem_read.out";
   file     outputFile: text;
 
 begin
@@ -45,7 +45,7 @@ begin
     -- Print temporary results
     if (clk = '1') then   -- print temporary and final results
       write (outputLine, string '("instr: "));
-      write (outputLine, to_integer (unsigned (instr)));
+      write (outputLine, to_integer (unsigned (q)));
       write (outputLine, string '(" jump: "));
       write (outputLine, to_integer (unsigned (jump)));
       writeline (outputFile, outputLine);

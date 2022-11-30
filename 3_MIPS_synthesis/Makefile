@@ -9,7 +9,7 @@ TIME="100ns"
 #
 GHDL=ghdl
 GHDLFLAGS=--ieee=synopsys --std=08
-GHDLRUNFLAGS=--vcd=$(MAIN).vcd --stop-time=$(TIME)
+GHDLRUNFLAGS=--vcd=$(MAIN_FETCH).vcd --stop-time=$(TIME)
 
 all: fetch
 

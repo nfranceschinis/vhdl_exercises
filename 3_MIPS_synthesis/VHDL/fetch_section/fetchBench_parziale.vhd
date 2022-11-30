@@ -6,25 +6,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity fetchBench is
-end fetchBench;
+entity fetchBench_parziale is
+end entity;
 
-architecture structural of fetchBench is                 -- structural -> describe how different parts are connected
+architecture structural of fetchBench_parziale is                 -- structural -> describe how different parts are connected
   --constants space
   constant N_logic : integer := 16;   --Select logic dimension
--- In/out description of adder module
-component adder is
-	generic (N : integer := 16);	-- 16 valore di default se nessun valore assegnato
-	port (a    : in  std_logic_vector (N-1 downto 0);
-	      b	   : in  std_logic_vector (N-1 downto 0);
-		    q	   : out std_logic_vector (N-1 downto 0));
-end component;
--- In/out description of instruction module
-component rom_mem is
-  generic (N_reg       : integer);    -- default value 16
-  port (instr_addr : in  std_logic_vector (N_reg-1 downto 0);
-        instr_out  : out std_logic_vector (N_reg-1 downto 0));
-end component;
 -- In/out description of instruction module
 component pc is
 	generic (N : integer);	-- 16 valore di default se nessun valore assegnato
@@ -40,22 +27,25 @@ component vectorGenerator is
         q     : in  std_logic_vector (N-1 downto 0));
 end component;
 
+component adder is
+	generic (N : integer := 16);	-- 16 valore di default se nessun valore assegnato
+	port (a    : in  std_logic_vector (N-1 downto 0);
+	      b	   : in  std_logic_vector (N-1 downto 0);
+		    q	   : out std_logic_vector (N-1 downto 0));
+end component;
+
   -- description of interconnection signals (effective cables between blocks)
-  signal instr_rdTB, instr_busTB: std_logic_vector (N_logic-1 downto 0);
+  signal instr_rdTB: std_logic_vector (N_logic-1 downto 0);
   signal instr_addrTB, jumpTB: std_logic_vector (N_logic-1 downto 0);
   signal clkTB : std_logic;
 
   begin
 
-    rom_mem1 : rom_mem generic map (N_reg => N_logic)
-                      port map (instr_addr => instr_rdTB,
-                                instr_out  => instr_busTB);
-
     pc1 : pc generic map (N => N_logic)
             port map (clk => clkTB,
                       a   => instr_addrTB,
                       q   => instr_rdTB);
-    
+
     adder1 : adder generic map (N => N_logic)
                 port map (a => instr_rdTB,
                           b => jumpTB,
@@ -63,7 +53,7 @@ end component;
 
   vectorGenerator1 : vectorGenerator generic map (N => N_logic)
                                   port map (clk   => clkTB,
-                                            jump  => jumpTB,
-                                            q => instr_busTB);  
+                                            jump => jumpTB,
+                                            q => instr_rdTB);  
 
 end structural;

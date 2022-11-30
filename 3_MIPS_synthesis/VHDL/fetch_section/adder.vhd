@@ -5,7 +5,7 @@
 
 library ieee;
 use	ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
+use ieee.numeric_std.all;
 -- In/out description of add block
 entity adder is
 	generic (N : integer := 16);	-- 16 valore di default se nessun valore assegnato
@@ -20,7 +20,7 @@ begin
 
 	add : process (a, b, q)  -- process description with signals sensitivity
    begin
-      q <= unsigned(a) + unsigned(b);
+      q <= std_logic_vector (unsigned(a) + unsigned(b));
    end process;
 
 end behavioral;

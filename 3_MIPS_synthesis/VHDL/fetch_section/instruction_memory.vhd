@@ -20,14 +20,13 @@ constant N_rom: integer := 4;
 signal rom_addr: std_logic_vector (N_rom-1 downto 0);
 type ROM_type is array (0 to 15) of std_logic_vector (15 downto 0);
 constant rom_data: ROM_type:=(
-   "1000000110000000",
-   "0010110010001011",
-   "1100010000000011",
-   "0001000111000000",
-   "1110110110000001",
-   "1100000001111011",
-   "0000000000000000",
-   "0000000000000000",
+   "0000000000000001",
+   "0000000000000010",
+   "0000000000000100",
+   "0000000000001000",
+   "0000000000010000",
+   "0000000000100000",
+   "0000000001000000",
    "0000000000000000",
    "0000000000000000",
    "0000000000000000",
@@ -38,6 +37,6 @@ constant rom_data: ROM_type:=(
    "0000000000000000"
   );
 begin
-  rom_addr <= instr_addr (N_reg downto 1);
-  instr_out <= rom_data (to_integer(unsigned (rom_addr))) when instr_addr < x"0020" else x"0000";
+  rom_addr <= instr_addr (N_reg downto 0);
+  instr_out <= rom_data (to_integer(unsigned (rom_addr)));
 end architecture;
