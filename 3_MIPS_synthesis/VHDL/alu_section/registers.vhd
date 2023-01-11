@@ -19,6 +19,10 @@ entity registers is
 end entity;
 
 architecture behavioral of registers is
-  
+
+type reg_type is array (0 to 7 ) of std_logic_vector (15 downto 0);
+signal reg_array: reg_type;
+
 begin
+
 end architecture;

@@ -1,4 +1,4 @@
--- Title:         ES 1: Differential equation
+-- Title:         ES 2: Differential equation
 -- Description:   behavioral description of vectorGenerator
 -- Author:        Nicola Franceschinis
 -- Date:          09/11/2022
@@ -53,7 +53,7 @@ begin
   
   clock : process   -- clock signal description and data saving
     variable ck : std_logic := '0';
-    variable counter : integer := '0';
+    variable counter : integer := 0;
     variable outputLine : line;
   begin
     clk <= ck;
